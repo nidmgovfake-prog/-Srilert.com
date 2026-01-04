@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบพนักงานบริษัท</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.login, .dashboard {
+  max-width: 360px;
+  margin: auto;
+  padding: 20px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+}
+
+button {
+  background: #0066ff;
+  color: white;
+  border: none;
+}
+
+.menu-btn {
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -220px;
+  width: 200px;
+  height: 100%;
+  background: #111;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.side-menu a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 12px 0;
+}
+
+.side-menu.show {
+  left: 0;
+}
+
+ul {
+  padding-left: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login" id="loginBox">
+  <h2>เข้าสู่ระบบพนักงาน</h2>
+
+  <input id="username" placeholder="ชื่อพนักงาน">
+  <input id="password" type="password" placeholder="รหัส 13 หลัก">
+
+  <button onclick="login()">เข้าสู่ระบบ</button>
+  <p id="error" style="color:red"></p>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard" id="dashboard" style="display:none">
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+  <h3 id="welcome"></h3>
+
+  <h4>ทีมงาน</h4>
+  <p id="team"></p>
+
+  <h4>งานที่รับผิดชอบ</h4>
+  <ul id="tasks"></ul>
+
+  <button onclick="logout()">ออกจากระบบ</button>
+</div>
+
+<!-- ===== MENU ===== -->
+<div class="side-menu" id="menu">
+  <a href="#">งานของฉัน</a>
+  <a href="#">ปฏิทิน</a>
+  <a href="#">แจ้งเตือน</a>
+</div>
+
+<script>
+/* =========================
+   🔧 ใส่ข้อมูลพนักงานตรงนี้
+   ========================= */
+
+const employees = [
+  {
+    username: "อุมาพร ทองหนุน",
+    password: "1623972448042",   // รหัส 13 หลัก
+    team: "ฝ่ายออกแบบเซิฟเวอร์",
+    tasks: [
+      "ออกแบบโคสร้าง/สิ่งปลูกสร้าต่างๆ",
+      "สรุปรายงานส่ง"
+    ]
+  },
+  {
+    username: "กนกพร อารมณ์เพียร",
+    password: "3535875469293",
+    team: "ฝ่ายสร้างโครงร่าง",
+    tasks: [
+      "ออกแบบโปสเตอร์",
+      "-"
+    ]
+  }
+  {
+    username: "เกวลิน แท่นนอก",
+    password: "1454767418865",
+    team: "ฝ่ายส้างโครงร่าง",
+    tasks: [
+      "ทำงานในเซิฟเวอร์",
+      "-"
+    ]
+  }
+  {
+    username: "กัญญาณัฐ จันขุนทด",
+    password: "7294152039219",
+    team: "ฝ่ายส้างโครงร่าง",
+    tasks: [
+      "ทำงานในเซิฟเวอร์",
+      "-"
+    ]
+  }
+  {
+    username: "วธูสิริ มานนอก",
+    password: "4041154881604",
+    team: "ฝ่ายส้างโครงร่าง",
+    tasks: [
+      "ทำงานในเซิฟเวอร์",
+      "-"
+    ]
+  }
+   {
+    username: "พิทวัส ลิศนันท์",
+    password: "4344243442123",
+    team: "กลุ่มผู้บริหาร",
+    tasks: [
+      "บริหารกลุ่มงานเซิฟเวอร์",
+      "-"
+    ]
+  }
+
+
+  // 👉 เพิ่มพนักงานได้ไม่จำกัด
+];
+
+/* ========================= */
+
+function login() {
+  const u = username.value;
+  const p = password.value;
+
+  const user = employees.find(e =>
+    e.username === u && e.password === p
+  );
+
+  if (!user) {
+    error.innerText = "ชื่อหรือรหัสไม่ถูกต้อง";
+    return;
+  }
+
+  loginBox.style.display = "none";
+  dashboard.style.display = "block";
+
+  welcome.innerText = "สวัสดี " + user.username;
+  team.innerText = user.team;
+
+  tasks.innerHTML = "";
+  user.tasks.forEach(t => {
+    const li = document.createElement("li");
+    li.innerText = t;
+    tasks.appendChild(li);
+  });
+}
+
+function toggleMenu() {
+  menu.classList.toggle("show");
+}
+
+function logout() {
+  location.reload();
+}
+</script>
+
+</body>
+</html>
